@@ -8,7 +8,7 @@ Mám pro vás řešení: sto nejsledovanějších českých účtů z Mastodonu.
 
 ### Postup:
 
-1. Stáhněte si soubor [100ncu.csv](https://raw.githubusercontent.com/maly/mastodonwtfcz/master/100ncu.csv)
+1. Stáhněte si soubor [100ncu.csv](https://raw.githubusercontent.com/maly/mastodonwtfcz/master/100ncu.csv) (pravým tlačítkem - Uložit odkaz jako...)
 2. V Mastodonu vyberte Nastavení
 3. V Nastavení zvolte položku Import a export
 4. Vyberte podvolbu Import
