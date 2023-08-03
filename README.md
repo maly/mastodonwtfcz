@@ -4,11 +4,11 @@
 
 Jste na Mastodonu noví? Nevíte, koho sledovat? Nevíte, kde začít?
 
-Mám pro vás řešení: sto nejsledovanějších českých účtů z Mastodonu. Stačí si naimportovat soubor [100ncu.csv](./100ncu.csv) do svého Mastodonu.
+Mám pro vás řešení: sto nejsledovanějších českých účtů z Mastodonu. Stačí si naimportovat soubor [100ncu.csv](https://raw.githubusercontent.com/maly/mastodonwtfcz/master/100ncu.csv) do svého Mastodonu.
 
 ### Postup:
 
-1. Stáhněte si soubor [100ncu.csv](./100ncu.csv)
+1. Stáhněte si soubor [100ncu.csv](https://raw.githubusercontent.com/maly/mastodonwtfcz/master/100ncu.csv)
 2. V Mastodonu vyberte Nastavení
 3. V Nastavení zvolte položku Import a export
 4. Vyberte podvolbu Import
