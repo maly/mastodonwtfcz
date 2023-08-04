@@ -32,7 +32,10 @@ Seznam obsahuje (1) sledované (2) české (3) aktivní Mastodoní účty všech
 1. "Sledované" znamená, že je sleduje větší množství lidí. Což ne vždy znamená "kvalitu" - ale kvalita je subjektivní. Možná zrovna vás zajímají témata, která jsou tak okrajová, že ti, co o nich píšou, mají deset sledujících. Takové v seznamu nenajdete; to není jeho účel. Jeho účel je ukázat vám "český mastodon", abyste neměli pocit, že jste tu sami a že nevíte, koho sledovat. Zkuste lidi ze seznamu - sledují je stovky dalších lidí, tak asi nějaký důvod k tomu mají... A ano, může se stát, že vám nebude nikdo vyhovovat.
 2. "České" podle toho, jakým jazykem píšou příspěvky. Pokud má někdo nastaveno v Nastavení - Předvolby - Ostatní - Jazyk příspěvků jiný jazyk než je čeština, tak v seznamu není. Bohužel.
 3. "Aktivní" jsou takoví, kteří tu opravdu publikují. Jsou účty, které napíšou jeden vybroušený klenot za dva měsíce, ale ty nejsou moc vhodné pro "začátečnické sledování". Najdete je časem. V seznamu jsou lidi, kteří za poslední měsíc napsali alespoň jeden příspěvek a mají za sebou už nějakou historii.
+4. Odfiltrovány jsou účty, které:
+  - požádaly o zrušení
+  - mají nastaveno "discoverable=false" (vypnutou možnost _navrhovat účet ostatním_)
 
-Seznam je aktuální k 1.8.2023. *Budu jej updatovat v nepravidelných intervalech.*
+Seznam je aktuální k 4.8.2023. *Budu jej updatovat v nepravidelných intervalech.*
 
 _Webové rozhraní připravuju..._
