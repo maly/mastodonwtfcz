@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- mobile friendly -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.19.1/dist/algoliasearch-lite.umd.js" integrity="sha256-qzlNbRtZWHoUV5I2mI2t9QR7oYXlS9oNctX+0pECXI0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.56.8/dist/instantsearch.production.min.js" integrity="sha256-xUys6KCuRGBxFaRaYZlWulRUjY48XFv6/Q2s0mb1dmc=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/reset-min.css" integrity="sha256-2AeJLzExpZvqLUxMfcs+4DWcMwNfpnjUeAAvEtPr0wU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/satellite-min.css" integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA=" crossorigin="anonymous">
+
+<style>
+
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col text-center justify-content-center">
+    <h3>Hledej uživatele</h3>
+                <div id="searchbox" class="">
+                    <!-- SearchBox widget will appear here -->
+                </div>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-md-3  d-flex flex-column ">
+    
+            <h3>Tagy</h3>
+            <div id="clear-refinements" class="my-3"></div>
+            <div id="brand-list"></div>
+          </div>
+    
+          <div class="col-md-9  d-flex flex-column order-first order-md-last">
+            <div id="searchbox" class="ais-SearchBox mb-3"></div>
+
+        <div id="hits"></div>
+        <div id="pagination"></div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+
+<script>
+    const searchClient = algoliasearch('KJPMF0VIHH', 'fde3351ee0a918982451e7345041675c');
+
+const search = instantsearch({
+  indexName: 'users',
+  searchClient,
+});
+
+let timerId
+
+search.addWidgets([
+  instantsearch.widgets.searchBox({
+    container: '#searchbox',
+    
+    queryHook(query, refine) {
+      clearTimeout(timerId)
+      timerId = setTimeout(() => refine(query), 500)
+    },
+  }),
+
+  instantsearch.widgets.clearRefinements({
+        container: '#clear-refinements',
+        templates: {
+            resetLabel: "Zrušit výběr"
+        }
+    }),
+    instantsearch.widgets.refinementList({
+        container: '#brand-list',
+        attribute: 'tags',
+        limit: 40
+    }),
+    instantsearch.widgets.configure({
+        hitsPerPage: 10,
+    }),
+
+  instantsearch.widgets.hits({
+    container: '#hits',
+
+    escapeHTML: true,
+        transformItems: (items) => {
+            //console.log(items)
+            return items.map(q => {
+                q.published = new Date(q.published).toLocaleString();
+                q.singleBuy = (q.artPrice > 0) ? ` &bull; <a href="/eshop/single/${q.pubslug}/${q.slug}" class="">__{Koupit tento příspěvek za}__ ${q.artPrice}&nbsp;${q.currency}</a>` : ""
+                return q
+            })
+        },
+        templates: {
+            item: (hit, bindEvent) => {
+                return `
+          <div class="row py-3 w-100">
+            <div class="col-sm col-md-4 col-lg-3 col-xl-2">
+            <a href="https://${hit.domain}/@${hit.handle}">
+            <img src="${hit.avatar}" class="ais-image me-3" align="left" alt="${hit.username}" style="border-radius:128px; width:128px" />
+            </a>
+            </div><div class="col">
+            <div class="hit-name">
+                <h6>
+
+                <a href="https://${hit.domain}/@${hit.handle}">
+                ${instantsearch.highlight({ attribute: 'display_name', hit })}
+              </a>
+              </h6>
+            </div>
+
+            <a href="https://${hit.domain}/@${hit.handle}" class="ais-pubtitle">
+                @${hit.handle}@${hit.domain}
+              </a>
+
+            <div class="hit-description my-2">
+            ${instantsearch.snippet({ attribute: 'note', hit, highlightedTagName: 'em' }).replace(/\<.*?\>/g, "")}
+            </div>
+            <div class="hit-meta">
+                ${hit.tags?hit.tags.map(q => `<a href="https://${hit.domain}/@${hit.handle}/tagged/${q[1]}" class="badge bg-secondary">${q[0]}</a>`).join(" "):""}
+            </div>
+
+            </div>
+          </div>
+        `
+            }
+        },
+
+
+  }),
+/*
+  instantsearch.widgets.pagination({
+        container: '#pagination',
+    }),
+    */
+]);
+
+search.start();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- mobile friendly -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/reset-min.css" integrity="sha256-2AeJLzExpZvqLUxMfcs+4DWcMwNfpnjUeAAvEtPr0wU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.0.0/themes/satellite-min.css" integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA=" crossorigin="anonymous">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/preact/10.16.0/preact.min.js" integrity="sha512-biKV2rK7902TnzlufXEuWOmelqYxYHH5UQf3dMbjzX48gquUhXjqqCkPfGCj2FFkvThIKubDVSq7vmYxnAObzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/preact-html-converter@0.4.2/dist/preact-html-converter.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@algolia/recommend-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@algolia/recommend"></script>
+  <script>
+    const { frequentlyBoughtTogether, relatedProducts, trendingItems, trendingFacets } = window['@algolia/recommend-js'];
+    const recommend = window['@algolia/recommend'];
+  </script>
+
+<style>
+
+
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row my-5">
+            <div class="col text-center justify-content-center">
+              <h1>Podobní uživatelé</h1>
+              <a href="index.html">Zpět na seznam uživatelů</a>
+            </div>
+        </div>
+
+    <div class="row">
+
+      <div id="relatedProducts"></div>
+
+
+
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+
+<script>
+
+const recommendClient = recommend('KJPMF0VIHH', 'fde3351ee0a918982451e7345041675c');
+const indexName = 'users';
+const who = document.location.search.substr(1).split("&").map(q=>q.split("=")).filter(q=>q[0]=="who")
+
+let currentObjectID = 'adent@masto.den1.cz';
+if (who&&who.length>0) {
+  currentObjectID = who[0][1].replace(/\<.*?\>/g,"").replace(/\%3C.*?\%3E/g,"");
+}
+
+//console.log(currentObjectID)
+
+
+function headerComponent(props) {
+    if (!props.translations.title) {
+      return null;
+    }
+
+    return preactHtmlConverter.convertStatic(`
+      <h3 class="auc-Recommend-title">
+        Pokud sledujete ${currentObjectID}, mohli by vás zajímat i tito uživatelé:
+      </h3>`
+    );
+}
+
+function ListView(props) {
+  return preactHtmlConverter.convertStatic(`
+    <div class="auc-Recommend-container">
+      <div class="auc-Recommend-list container">
+        ${props.items.map(item => `
+          <div key=${item.objectID} class="auc-Recommend-item row py-3 w-100">
+            <div class="col-sm col-md-4 col-lg-3 col-xl-2">
+            <a href="https://${item.domain}/@${item.handle}" target="_blank">
+              <img src=${item.avatar} alt=${item.handle} style="max-width:128px">
+              </a></div>
+              <div class="col">
+              <h4><a href="https://${item.domain}/@${item.handle}" target="_blank">${item.display_name}</a></h4>
+              <div>${item.note}</div>
+              <a href="recommend.html?who=${item.handle}@${item.domain}" class="badge bg-secondary">Podobní...</a>
+              </div>
+          </div>`
+        ).join("")}
+      </div>
+    </div>`
+  );
+}
+
+
+relatedProducts({
+  container: '#relatedProducts',
+  recommendClient,
+  indexName,
+  maxRecommendations:7,
+  objectIDs: [currentObjectID],
+  //itemComponent: RelatedItem,
+  headerComponent,
+  view:ListView
+});
+</script>
+
+</body>
+</html>
